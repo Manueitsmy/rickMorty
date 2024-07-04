@@ -5,11 +5,13 @@ import { HttpClientModule } from '@angular/common/http';
 import { AppComponent } from './app.component';
 import { CharactersComponent } from './characters/characters.component';
 import { AppRoutingModule } from './app-routing.module';
+import { CountdownPipe } from './countdown.pipe'; // Assurez-vous d'importer le pipe
 
 @NgModule({
   declarations: [
     AppComponent,
-    CharactersComponent
+    CharactersComponent,
+    CountdownPipe // Déclarez le pipe ici
   ],
   imports: [
     BrowserModule,

@@ -13,8 +13,4 @@ export class RickMortyService {
   getCharacters(): Observable<any> {
     return this.http.get(`${this.apiUrl}/character`);
   }
-
-  getCharacter(id: number): Observable<any> {
-    return this.http.get(`${this.apiUrl}/character/${id}`);
-  }
 }

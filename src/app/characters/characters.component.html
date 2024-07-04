@@ -1,9 +1,14 @@
-<div *ngIf="characters.length > 0">
-    <div *ngFor="let character of characters" class="character-card">
-      <h2>{{ character.name }}</h2>
-      <img [src]="character.image" alt="{{ character.name }}">
-      <p>Status: {{ character.status }}</p>
-      <p>Species: {{ character.species }}</p>
-      <p>Gender: {{ character.gender }}</p>
+<div>
+    <button (click)="drawRandomCharacter()" [disabled]="buttonDisabled">
+      Tirer une carte
+    </button>
+    <p *ngIf="buttonDisabled">Temps restant : {{ countdown | date:'HH:mm:ss':'UTC' }}</p>
+    <div *ngIf="selectedCharacter" class="character-card">
+      <h2>{{ selectedCharacter.name }}</h2>
+      <img [src]="selectedCharacter.image" alt="{{ selectedCharacter.name }}">
+      <p>Status: {{ selectedCharacter.status }}</p>
+      <p>Species: {{ selectedCharacter.species }}</p>
+      <p>Gender: {{ selectedCharacter.gender }}</p>
+      <p>Character ID: {{ selectedCharacter.id }}</p>
     </div>
   </div>  
