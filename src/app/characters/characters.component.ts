@@ -11,8 +11,8 @@ export class CharactersComponent implements OnInit, OnDestroy {
   characters: any[] = [];
   selectedCharacter: any;
   drawnCharacters: any[] = []; // Liste des cartes tirées
-  buttonDisabled: boolean = true;
-  countdown: number = 20; // 2 hours in seconds
+  buttonDisabled: boolean = false;
+  countdown: number = 7200; // 2 hours in seconds
   countdownSubscription: Subscription | undefined;
 
   constructor(
@@ -35,7 +35,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.characters = data.results;
         console.log('Characters loaded:', this.characters);
-        this.startCountdown();
+        // this.startCountdown();
       },
       (error) => {
         console.error('Error loading characters:', error);
@@ -82,7 +82,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   resetCountdown(): void {
     this.buttonDisabled = true;
-    this.countdown = 20; // Reset du décompte à 2 heures
+    this.countdown = 7200; // Reset du décompte à 2 heures
     this.saveCountdown();
     this.startCountdown();
   }

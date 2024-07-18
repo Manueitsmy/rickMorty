@@ -1,5 +1,5 @@
 <div>
-  <button (click)="drawRandomCharacter()" [disabled]="buttonDisabled">
+  <button (click)="drawRandomCharacter(); resetCountdown()" [disabled]="buttonDisabled">
     Tirer une carte
   </button>
   <p *ngIf="buttonDisabled">Temps restant : {{ countdown | countdown }}</p>
