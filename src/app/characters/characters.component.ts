@@ -11,10 +11,9 @@ export class CharactersComponent implements OnInit, OnDestroy {
   characters: any[] = [];
   selectedCharacter: any;
   drawnCharacters: any[] = []; // Liste des cartes tirées
-  buttonDisabled: boolean = false; // Permettre le premier tirage
-  countdown: number = 7200; // 2 hours in seconds
+  buttonDisabled: boolean = true;
+  countdown: number = 20; // 2 hours in seconds
   countdownSubscription: Subscription | undefined;
-  firstDraw: boolean = true; // Indiquer si le premier tirage a été fait
 
   constructor(
     private rickMortyService: RickMortyService,
@@ -36,6 +35,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.characters = data.results;
         console.log('Characters loaded:', this.characters);
+        this.startCountdown();
       },
       (error) => {
         console.error('Error loading characters:', error);
@@ -77,17 +77,12 @@ export class CharactersComponent implements OnInit, OnDestroy {
     this.drawnCharacters.push(this.selectedCharacter);
     this.saveDrawnCharacters();
 
-    if (this.firstDraw) {
-      this.firstDraw = false; // Marquer que le premier tirage est fait
-      this.resetCountdown();
-    } else {
-      this.resetCountdown();
-    }
+    this.resetCountdown();
   }
 
   resetCountdown(): void {
     this.buttonDisabled = true;
-    this.countdown = 7200; // Reset du décompte à 2 heures
+    this.countdown = 20; // Reset du décompte à 2 heures
     this.saveCountdown();
     this.startCountdown();
   }
