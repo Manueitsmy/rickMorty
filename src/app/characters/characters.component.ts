@@ -7,20 +7,27 @@ import { interval, Subscription } from 'rxjs';
   templateUrl: './characters.component.html',
   styleUrls: ['./characters.component.css']
 })
-export class CharactersComponent implements OnInit {
+export class CharactersComponent implements OnInit, OnDestroy {
   characters: any[] = [];
   selectedCharacter: any;
+  drawnCharacters: any[] = [];
   buttonDisabled: boolean = true;
-  countdown: number = 10;
-  countdownSubscription!: Subscription;
+  countdown: number = 200;
+  countdownSubscription: Subscription | undefined;
 
   constructor(
     private rickMortyService: RickMortyService,
-    private ngZone: NgZone // Injecter NgZone
+    private ngZone: NgZone
   ) {}
 
   ngOnInit(): void {
-    this.fetchCharacters(); // Appel initial pour charger les personnages
+    this.fetchCharacters();
+    this.loadCountdown();
+    this.loadDrawnCharacters();
+  }
+
+  ngOnDestroy(): void {
+    this.unsubscribeCountdown();
   }
 
   fetchCharacters(): void {
@@ -28,7 +35,7 @@ export class CharactersComponent implements OnInit {
       (data: any) => {
         this.characters = data.results;
         console.log('Characters loaded:', this.characters);
-        this.startCountdown(); // Démarrage du décompte une fois que les personnages sont chargés
+        this.startCountdown();
       },
       (error) => {
         console.error('Error loading characters:', error);
@@ -42,13 +49,12 @@ export class CharactersComponent implements OnInit {
       if (this.countdown > 0) {
         this.countdown--;
         console.log('Countdown:', this.countdown);
-        // Forcer la mise à jour de la vue à l'intérieur de la zone Angular
+        this.saveCountdown();
         this.ngZone.run(() => {});
       } else {
         this.buttonDisabled = false;
-        this.unsubscribeCountdown(); // Arrêt du décompte une fois terminé
+        this.unsubscribeCountdown();
         console.log('Countdown finished, button enabled.');
-        // Forcer la mise à jour de la vue à l'intérieur de la zone Angular
         this.ngZone.run(() => {});
       }
     });
@@ -66,12 +72,45 @@ export class CharactersComponent implements OnInit {
     const randomIndex = Math.floor(Math.random() * this.characters.length);
     this.selectedCharacter = this.characters[randomIndex];
     console.log('Selected character:', this.selectedCharacter);
+
+    this.drawnCharacters.push(this.selectedCharacter);
+    this.saveDrawnCharacters();
+
     this.resetCountdown();
   }
 
   resetCountdown(): void {
     this.buttonDisabled = true;
-    this.countdown = 10;
+    this.countdown = 200; // Reset du décompte à 2 heures
+    this.saveCountdown();
     this.startCountdown();
+  }
+
+  saveCountdown(): void {
+    localStorage.setItem('countdown', this.countdown.toString());
+    localStorage.setItem('buttonDisabled', this.buttonDisabled.toString());
+  }
+
+  loadCountdown(): void {
+    const savedCountdown = localStorage.getItem('countdown');
+    const savedButtonState = localStorage.getItem('buttonDisabled');
+
+    if (savedCountdown !== null) {
+      this.countdown = parseInt(savedCountdown, 10);
+    }
+    if (savedButtonState !== null) {
+      this.buttonDisabled = savedButtonState === 'true';
+    }
+  }
+
+  saveDrawnCharacters(): void {
+    localStorage.setItem('drawnCharacters', JSON.stringify(this.drawnCharacters));
+  }
+
+  loadDrawnCharacters(): void {
+    const savedDrawnCharacters = localStorage.getItem('drawnCharacters');
+    if (savedDrawnCharacters !== null) {
+      this.drawnCharacters = JSON.parse(savedDrawnCharacters);
+    }
   }
 }
