@@ -10,10 +10,11 @@ import { interval, Subscription } from 'rxjs';
 export class CharactersComponent implements OnInit, OnDestroy {
   characters: any[] = [];
   selectedCharacter: any;
-  drawnCharacters: any[] = [];
-  buttonDisabled: boolean = true;
-  countdown: number = 20;
+  drawnCharacters: any[] = []; // Liste des cartes tirées
+  buttonDisabled: boolean = false; // Permettre le premier tirage
+  countdown: number = 7200; // 2 hours in seconds
   countdownSubscription: Subscription | undefined;
+  firstDraw: boolean = true; // Indiquer si le premier tirage a été fait
 
   constructor(
     private rickMortyService: RickMortyService,
@@ -23,7 +24,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
   ngOnInit(): void {
     this.fetchCharacters();
     this.loadCountdown();
-    this.loadDrawnCharacters();
+    this.loadDrawnCharacters(); // Charger les cartes tirées
   }
 
   ngOnDestroy(): void {
@@ -35,7 +36,6 @@ export class CharactersComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.characters = data.results;
         console.log('Characters loaded:', this.characters);
-        this.startCountdown();
       },
       (error) => {
         console.error('Error loading characters:', error);
@@ -73,15 +73,21 @@ export class CharactersComponent implements OnInit, OnDestroy {
     this.selectedCharacter = this.characters[randomIndex];
     console.log('Selected character:', this.selectedCharacter);
 
+    // Ajouter la carte tirée à la liste et sauvegarder dans le localStorage
     this.drawnCharacters.push(this.selectedCharacter);
     this.saveDrawnCharacters();
 
-    this.resetCountdown();
+    if (this.firstDraw) {
+      this.firstDraw = false; // Marquer que le premier tirage est fait
+      this.resetCountdown();
+    } else {
+      this.resetCountdown();
+    }
   }
 
   resetCountdown(): void {
     this.buttonDisabled = true;
-    this.countdown = 20; // Reset du décompte à 2 heures
+    this.countdown = 7200; // Reset du décompte à 2 heures
     this.saveCountdown();
     this.startCountdown();
   }
