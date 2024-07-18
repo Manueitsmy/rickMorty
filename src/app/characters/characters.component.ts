@@ -12,7 +12,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
   selectedCharacter: any;
   drawnCharacters: any[] = []; // Liste des cartes tirées
   buttonDisabled: boolean = false; // Permettre le premier tirage
-  countdown: number = 20; // 2 hours in seconds
+  countdown: number = 7200; // 2 hours in seconds
   countdownSubscription: Subscription | undefined;
   firstDraw: boolean = true; // Indiquer si le premier tirage a été fait
 
@@ -87,7 +87,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   resetCountdown(): void {
     this.buttonDisabled = true;
-    this.countdown = 20; // Reset du décompte à 2 heures
+    this.countdown = 7200; // Reset du décompte à 2 heures
     this.saveCountdown();
     this.startCountdown();
   }
