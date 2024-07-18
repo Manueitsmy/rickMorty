@@ -4,7 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --base-href /rick-morty/",
+    "build": "ng build --base-href /rickMorty/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
