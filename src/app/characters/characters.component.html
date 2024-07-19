@@ -1,5 +1,5 @@
 <div>
-  <button (click)="drawRandomCharacter()" [disabled]="buttonDisabled">
+  <button data-test-id="button_to_click" (click)="drawRandomCharacter()" [disabled]="buttonDisabled">
     Tirer une carte
   </button>
   <p *ngIf="buttonDisabled">Temps restant : {{ countdown | countdown }}</p>

@@ -11,7 +11,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
   characters: any[] = [];
   selectedCharacter: any;
   drawnCharacters: any[] = [];
-  buttonDisabled: boolean = true;
+  buttonDisabled: boolean = false;
   countdown: number = 20;
   countdownSubscription: Subscription | undefined;
 
@@ -22,7 +22,6 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchCharacters();
-    // this.loadCountdown();
     this.loadDrawnCharacters();
   }
 
@@ -35,7 +34,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.characters = data.results;
         console.log('Characters loaded:', this.characters);
-        this.startCountdown();
+        // this.startCountdown();
       },
       (error) => {
         console.error('Error loading characters:', error);
