@@ -12,7 +12,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
   selectedCharacter: any;
   drawnCharacters: any[] = [];
   buttonDisabled: boolean = false;
-  countdown: number = 20;
+  countdown: number = 7200;
   countdownSubscription: Subscription | undefined;
 
   constructor(
@@ -80,7 +80,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   resetCountdown(): void {
     this.buttonDisabled = true;
-    this.countdown = 20;
+    this.countdown = 7200;
     this.saveCountdown();
     this.startCountdown();
   }
