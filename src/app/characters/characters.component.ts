@@ -10,9 +10,9 @@ import { interval, Subscription } from 'rxjs';
 export class CharactersComponent implements OnInit, OnDestroy {
   characters: any[] = [];
   selectedCharacter: any;
-  drawnCharacters: any[] = []; // Liste des cartes tirées
-  buttonDisabled: boolean = false;
-  countdown: number = 7200; // 2 hours in seconds
+  drawnCharacters: any[] = [];
+  buttonDisabled: boolean = true;
+  countdown: number = 20;
   countdownSubscription: Subscription | undefined;
 
   constructor(
@@ -22,8 +22,8 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   ngOnInit(): void {
     this.fetchCharacters();
-    this.loadCountdown();
-    this.loadDrawnCharacters(); // Charger les cartes tirées
+    // this.loadCountdown();
+    this.loadDrawnCharacters();
   }
 
   ngOnDestroy(): void {
@@ -35,7 +35,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
       (data: any) => {
         this.characters = data.results;
         console.log('Characters loaded:', this.characters);
-        // this.startCountdown();
+        this.startCountdown();
       },
       (error) => {
         console.error('Error loading characters:', error);
@@ -73,7 +73,6 @@ export class CharactersComponent implements OnInit, OnDestroy {
     this.selectedCharacter = this.characters[randomIndex];
     console.log('Selected character:', this.selectedCharacter);
 
-    // Ajouter la carte tirée à la liste et sauvegarder dans le localStorage
     this.drawnCharacters.push(this.selectedCharacter);
     this.saveDrawnCharacters();
 
@@ -82,7 +81,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
 
   resetCountdown(): void {
     this.buttonDisabled = true;
-    this.countdown = 7200; // Reset du décompte à 2 heures
+    this.countdown = 20;
     this.saveCountdown();
     this.startCountdown();
   }
