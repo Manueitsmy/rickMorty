@@ -67,7 +67,7 @@ export class CharactersComponent implements OnInit, OnDestroy {
   }
 
   drawRandomCharacter(): void {
-    if (this.buttonDisabled || this.characters.length === 0) return;
+    if (this.buttonDisabled) return;
 
     const randomIndex = Math.floor(Math.random() * this.characters.length);
     this.selectedCharacter = this.characters[randomIndex];
